@@ -13,23 +13,26 @@ img{
   margin-bottom: 1%;
 }
 
-.row{
-  display: flex;  
-  flex: 1;
-  flex-direction: row;
+.row {
+  display: flex;
+  flex-direction: row;  /* Ensure the row is horizontal */
   margin: auto;
-  margin-top: 1%;
-  justify-content: center;
-  padding:20px;
+  justify-content: space-between; /* Ensure space between the elements */
+  padding: 20px;
 }
 
 .container{
   justify-content: center;
 }
 .details{
+  width: 45%;
   font-size: 20px;
   color: rgb(97, 64, 128);
   padding:20px;
+}
+
+.contact-info {
+  padding: 20px;
 }
 
 .title{
@@ -37,14 +40,15 @@ img{
   background-color: rgb(97, 64, 128);
   color: white;
   text-align: center;
-  margin:20px;
+  margin:5px;
   padding:5px;
 }
 
 .homepage_links{
   color:  rgb(97, 64, 128);
-  padding: 25%;
+  padding: 0%;
   font-size: larger;
+  text-align: center;
   }
 
 .loginlink{
@@ -59,6 +63,11 @@ img{
   align-items: center;
   justify-content: center;
   flex:1
+}
+
+.banner img {
+  width: 30%; /* Ensure the image covers the available space */
+  height: auto;
 }
 
 .form_panel {
