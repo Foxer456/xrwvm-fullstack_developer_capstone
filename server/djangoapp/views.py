@@ -11,6 +11,8 @@ from datetime import datetime
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .models import CarMake, CarModel
+from .populate import initiate
 
 
 # Get an instance of a logger
@@ -73,3 +75,25 @@ def register(request):
     else :
         data = {"userName":username,"error":"Already Registered"}
         return JsonResponse(data)
+
+def get_cars(request):
+    count = CarMake.objects.filter().count()
+    print(count)
+
+    car_make_count = CarMake.objects.count()  # Count the car makes
+    car_model_count = CarModel.objects.count()  # Count the car models
+
+    # Print the count of CarMake and CarModel in the server logs
+    print(f"CarMake count: {car_make_count}")
+    print(f"CarModel count: {car_model_count}")
+
+    if count <= 0:
+        initiate()  # Populate data if none exists
+    car_models = CarModel.objects.select_related('car_make')
+    cars = []
+    for car_model in car_models:
+        cars.append({
+            "CarModel": car_model.name,
+            "CarMake": car_model.car_make.name
+        })
+    return JsonResponse({"CarModels": cars})
