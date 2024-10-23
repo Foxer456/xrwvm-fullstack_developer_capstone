@@ -18,7 +18,7 @@ const Register = () => {
 
   const register = async (e) => {
     e.preventDefault();
-    let register_url = window.location.origin + "/register/";
+    let register_url = window.location.origin + "/djanoapp/register/";
 
 
     const res = await fetch(register_url, {

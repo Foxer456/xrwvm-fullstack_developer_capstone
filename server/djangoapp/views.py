@@ -43,39 +43,40 @@ def logout_request(request):
     data = {"userName": ""}
     return JsonResponse(data)
 
+@csrf_exempt  # Only if you are sending raw JSON data; otherwise, remove this
 def register(request):
+    # Handle POST request for registration
     if request.method == 'POST':
-        print("POST request received")  # Debugging log
-        # Your registration logic here
-    context = {}
+        try:
+            # For form-based POST requests, you should use request.POST instead of request.body.
+            data = json.loads(request.body)  # If using raw JSON data, keep this. Otherwise, use request.POST.
+            username = data.get('userName')
+            password = data.get('password')
+            first_name = data.get('firstName')
+            last_name = data.get('lastName')
+            email = data.get('email')
 
-    data = json.loads(request.body)
-    username = data['userName']
-    password = data['password']
-    first_name = data['firstName']
-    last_name = data['lastName']
-    email = data['email']
-    username_exist = False
-    email_exist = False
-    try:
-        # Check if user already exists
-        User.objects.get(username=username)
-        username_exist = True
-    except:
-        # If not, simply log this is a new user
-        logger.debug("{} is new user".format(username))
+            # Check if user already exists
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({"userName": username, "error": "Already Registered"}, status=400)
 
-    # If it is a new user
-    if not username_exist:
-        # Create user in auth_user table
-        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=password, email=email)
-        # Login the user and redirect to list page
-        login(request, user)
-        data = {"userName":username,"status":"Authenticated"}
-        return JsonResponse(data)
-    else :
-        data = {"userName":username,"error":"Already Registered"}
-        return JsonResponse(data)
+            # If the username is unique, create the new user
+            user = User.objects.create_user(
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                password=password,
+                email=email
+            )
+            # Log in the user after registration
+            login(request, user)
+            return JsonResponse({"userName": username, "status": "Authenticated"}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    # If the request is GET (for displaying the form or otherwise)
+    return render(request, 'register.html')  # Render your registration form here
 
 def get_cars(request):
     count = CarMake.objects.filter().count()

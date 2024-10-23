@@ -39,14 +39,20 @@ def get_request(endpoint, **kwargs):
         return None
 
 def analyze_review_sentiments(text):
-    request_url = sentiment_analyzer_url+"analyze/"+text
+    request_url = sentiment_analyzer_url + "analyze/" + text
     try:
         # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
-        return response.json()
+        if response.status_code == 200:
+            return response.json()  # Gibt ein Dictionary zurück
+        else:
+            print(f"Failed to analyze sentiment: {response.status_code}")
+            return {"sentiment": "unknown"}  # Gibt ein Dictionary mit einem Standardwert zurück
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
         print("Network exception occurred")
+        return {"sentiment": "unknown"}  # Gibt ein Dictionary mit einem Standardwert zurück
+
 
 
 def post_review(data_dict):
