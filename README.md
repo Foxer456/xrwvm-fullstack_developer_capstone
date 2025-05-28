@@ -39,30 +39,18 @@ Sentiment Analysis: IBM Watson NLU
 🔧 Setup Instructions
 Clone the repo:
 
-bash
-Kopieren
-Bearbeiten
 git clone https://github.com/Foxer456/your-repo-name.git
 cd your-repo-name/server
 Install dependencies:
 
-bash
-Kopieren
-Bearbeiten
 python -m pip install -r requirements.txt
 Run Django migrations and server:
 
-bash
-Kopieren
-Bearbeiten
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 Create a superuser for the admin panel:
 
-bash
-Kopieren
-Bearbeiten
 python manage.py createsuperuser
 ☁️ Deployment to IBM Cloud
 Install the IBM Cloud CLI
@@ -71,7 +59,5 @@ Configure the manifest.yml file
 
 Deploy with:
 
-bash
-Kopieren
-Bearbeiten
+
 ibmcloud cf push
